@@ -14,7 +14,6 @@ require 'recipe/codeigniter.php';
 set('application', 'ci-cd-demo');
 
 // ★ 自分の GitHub（personal）リポジトリの SSH URL に置き換える
-//set('repository', 'git@github.com:kamoya999/ci-cd-demo.git');
 set('repository', 'https://github.com/kamoya999/ci-cd-demo.git');
 
 set('keep_releases', 5);     // ロールバック用に5世代保持
