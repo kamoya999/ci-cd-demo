@@ -19,8 +19,10 @@ jobs:
         with:
           php-version: "8.3"          # Deployer 8 は PHP 8.3 以上で動作
 
-      - name: (デモアプリ) アプリ依存は不要
-        run: echo "アプリは Composer 非依存。Deployer は次の action が導入する。"
+      - name: Install Deployer
+        # これが無いと deployphp/action が "Deployer binary not found" になる。
+        # vendor/bin/dep を用意すると action が自動で検出して使う。
+        run: composer require deployer/deployer:^8 --dev --no-interaction
 
       - name: Deploy
         uses: deployphp/action@v1
