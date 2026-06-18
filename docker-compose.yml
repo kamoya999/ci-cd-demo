@@ -1,0 +1,42 @@
+# =====================================================================
+#  ローカル開発環境（Docker Compose）
+#    web : CentOS 6 + Apache 2.2 + PHP 5.3（本番互換）
+#    db  : MySQL 5.7
+#
+#  起動:   docker compose up -d --build
+#  確認:   http://localhost:8080
+#  停止:   docker compose down       （データ保持）
+#  初期化: docker compose down -v     （DBデータも削除）
+# =====================================================================
+services:
+  web:
+    build:
+      context: ./docker/web
+      # PHP5.3(CentOS6) を使う。exit 139 で落ちる/WSL2を触りたくない場合は
+      # 下を Dockerfile.php56 に変更（公式 php:5.6-apache, segfault しない）。
+      dockerfile: Dockerfile.php56
+    ports:
+      - "8080:80"
+    volumes:
+      # ソースをコンテナの DocumentRoot にマウント（編集が即反映）
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    # Apple Silicon 等 arm64 環境では下行を有効化:
+    # platform: linux/amd64
+    ports:
+      - "3307:3306"        # ホスト側 3307（ローカル MySQL と衝突回避）
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: demo_app
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demopass
+    volumes:
+      - ./docker/db/initdb:/docker-entrypoint-initdb.d:ro
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

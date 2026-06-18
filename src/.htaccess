@@ -1,0 +1,3 @@
+# デモ用は単一の index.php なので最小限。CI2 ルーティングを使う場合は
+# 公式ユーザーガイドの mod_rewrite 設定に置き換える。
+DirectoryIndex index.php

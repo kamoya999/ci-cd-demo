@@ -1,0 +1,18 @@
+# =====================================================================
+#  代替版 Web コンテナ（公式 php:5.6-apache / Debian ベース）
+#
+#  CentOS 6 の vsyscall segfault（exit 139）を回避したい、WSL2 のカーネル設定を
+#  変更したくない場合に使う。マニュアル付録 E でも 5.6 標準版は許容されている。
+#
+#  使い方: docker-compose.yml の web.build.dockerfile を Dockerfile.php56 に変更。
+#  ※ PHP は 5.6 になる（本番 5.3 との僅差。デモアプリは mysqli のみで動作する）。
+# =====================================================================
+FROM php:5.6-apache
+
+# MySQL 接続用拡張（mysqli）を有効化し、.htaccess を許可
+RUN docker-php-ext-install mysqli \
+ && a2enmod rewrite \
+ && sed -ri 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# DocumentRoot は /var/www/html（compose で ./src をマウント）
+# php:5.6-apache は mod_php + Apache 同梱なので追加設定不要

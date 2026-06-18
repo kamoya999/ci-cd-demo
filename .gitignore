@@ -1,0 +1,29 @@
+# ===== 機密・設定ファイル =====
+src/application/config/database.php
+deploy_key
+deploy_key.pub
+*.pem
+
+# ===== Deployer（プロジェクトローカル導入時） =====
+/vendor/
+composer.lock
+
+# ===== キャッシュ・ログ（中身のみ除外） =====
+src/application/cache/*
+src/application/logs/*
+!src/application/cache/index.html
+!src/application/logs/index.html
+
+# ===== ビルド成果物・一時ファイル =====
+/build/
+*.log
+*.cache
+
+# ===== OS / エディタ =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vscode/
+*.swp
